@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Dayflow HRMS</title>
-  <meta name="description" content="Dayflow HRMS Admin Dashboard for employee management, leave approvals, attendance logs, and payroll control.">
+  <title>Admin Operations Portal - Dayflow HRMS</title>
+  <meta name="description" content="Dayflow HRMS Admin Portal for employee directory management, attendance tracking, leave approval workflows, and payroll control.">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,10 +13,10 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="auth-brand-logo" style="width:36px; height:36px; font-size:18px;">D</div>
+        <div class="auth-brand-logo" style="width:34px; height:34px; font-size:16px;">D</div>
         <div>
-          <h2 style="font-size: 18px; font-weight: 800;">Dayflow</h2>
-          <span class="badge badge-approved" style="font-size: 10px;">HR Admin</span>
+          <h2 style="font-size: 16px; font-weight: 700; letter-spacing: -0.3px;">Dayflow</h2>
+          <span class="badge badge-approved" style="font-size: 9px; padding: 2px 6px;">HR Officer</span>
         </div>
       </div>
 
@@ -39,8 +39,8 @@
         </div>
       </nav>
 
-      <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--surface-border);">
-        <button class="btn btn-secondary btn-block" onclick="handleLogout()">Logout</button>
+      <div style="margin-top: auto; padding-top: var(--space-4); border-top: 1px solid var(--border-subtle);">
+        <button class="btn btn-secondary btn-block" onclick="handleLogout()">Sign Out</button>
       </div>
     </aside>
 
@@ -49,15 +49,15 @@
       <!-- Topbar Header -->
       <header class="topbar">
         <div>
-          <h3 id="page-title" style="font-size: 20px; font-weight: 700;">Employee Directory</h3>
+          <h3 id="page-title" style="font-size: 18px; font-weight: 700;">Employee Directory</h3>
           <p style="font-size: 12px; color: var(--text-muted);">Manage workforce profiles, roles, and administrative records.</p>
         </div>
 
         <div class="user-profile-badge">
           <img id="admin-avatar" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" alt="Avatar" class="avatar">
           <div>
-            <div id="admin-name" style="font-weight: 600; font-size: 14px;">Sarah Jenkins</div>
-            <div id="admin-email" style="font-size: 12px; color: var(--text-muted);">admin@dayflow.com</div>
+            <div id="admin-name" style="font-weight: 600; font-size: 13px;">Sarah Jenkins</div>
+            <div id="admin-email" style="font-size: 11px; color: var(--text-muted);">admin@dayflow.com</div>
           </div>
         </div>
       </header>
@@ -65,31 +65,31 @@
       <!-- Content Views -->
       <div class="content-area">
 
-        <!-- Top Metrics Row -->
+        <!-- Top Overview Metrics Grid -->
         <div class="metrics-grid">
           <div class="metric-card">
-            <div class="metric-icon" style="background: rgba(99, 102, 241, 0.2); color: var(--primary);">👥</div>
+            <div class="metric-icon" style="background: var(--primary-tint); color: #818cf8;">👥</div>
             <div>
               <div id="metric-total-employees" class="metric-value">0</div>
               <div class="metric-label">Total Employees</div>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon" style="background: var(--success-bg); color: var(--success);">✅</div>
+            <div class="metric-icon" style="background: var(--status-present-bg); color: var(--status-present-text);">✅</div>
             <div>
               <div id="metric-present-today" class="metric-value">0</div>
               <div class="metric-label">Present Today</div>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon" style="background: var(--warning-bg); color: var(--warning);">⏳</div>
+            <div class="metric-icon" style="background: var(--status-warning-bg); color: var(--status-warning-text);">⏳</div>
             <div>
               <div id="metric-pending-leaves" class="metric-value">0</div>
               <div class="metric-label">Pending Leaves</div>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon" style="background: rgba(56, 189, 248, 0.2); color: var(--accent);">💵</div>
+            <div class="metric-icon" style="background: var(--accent-cyan-tint); color: var(--accent-cyan);">💵</div>
             <div>
               <div id="metric-total-payroll" class="metric-value">$0</div>
               <div class="metric-label">Monthly Payroll</div>
@@ -99,8 +99,8 @@
 
         <!-- SECTION 1: EMPLOYEE DIRECTORY -->
         <section id="sec-employees">
-          <div class="card" style="margin-bottom: 24px;">
-            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+          <div class="card" style="margin-bottom: var(--space-6); padding: var(--space-4);">
+            <div style="display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center; justify-content: space-between;">
               <input type="text" id="employee-search" class="form-control" style="max-width: 320px;" placeholder="Search by name, ID, or email..." oninput="filterEmployees()">
               <select id="department-filter" class="form-control" style="max-width: 220px;" onchange="filterEmployees()">
                 <option value="">All Departments</option>
@@ -131,11 +131,11 @@
           </div>
         </section>
 
-        <!-- SECTION 2: ATTENDANCE RECORDS & MANAGE -->
+        <!-- SECTION 2: ATTENDANCE RECORDS & OVERRIDE -->
         <section id="sec-attendance" style="display: none;">
-          <div class="card" style="margin-bottom: 24px;">
-            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
-              <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="card" style="margin-bottom: var(--space-6); padding: var(--space-4);">
+            <div style="display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center; justify-content: space-between;">
+              <div style="display: flex; gap: var(--space-3); align-items: center;">
                 <input type="date" id="att-filter-date" class="form-control" onchange="loadAdminAttendance()">
                 <select id="att-filter-emp" class="form-control" onchange="loadAdminAttendance()">
                   <option value="">All Employees</option>
@@ -165,9 +165,9 @@
 
         <!-- SECTION 3: LEAVE APPROVALS QUEUE -->
         <section id="sec-leaves" style="display: none;">
-          <div class="card" style="margin-bottom: 24px;">
-            <div style="display: flex; gap: 12px;">
-              <button class="btn btn-secondary" onclick="filterLeaveStatus('')">All</button>
+          <div class="card" style="margin-bottom: var(--space-6); padding: var(--space-3);">
+            <div style="display: flex; gap: var(--space-2);">
+              <button class="btn btn-secondary" onclick="filterLeaveStatus('')">All Requests</button>
               <button class="btn btn-secondary" onclick="filterLeaveStatus('Pending')">Pending Queue</button>
               <button class="btn btn-secondary" onclick="filterLeaveStatus('Approved')">Approved</button>
               <button class="btn btn-secondary" onclick="filterLeaveStatus('Rejected')">Rejected</button>
@@ -218,11 +218,11 @@
         <!-- SECTION 5: REPORTS & ANALYTICS STUB -->
         <section id="sec-reports" style="display: none;">
           <div class="card">
-            <h3 style="margin-bottom: 12px;">📊 Reports & Analytics Hub</h3>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Generate exportable attendance audit logs, payroll slip statements, and workforce breakdown summaries.</p>
-            <div style="display: flex; gap: 16px;">
-              <button class="btn btn-secondary" onclick="alert('Attendance report generated successfully!')">Export Attendance CSV</button>
-              <button class="btn btn-secondary" onclick="alert('Payroll summary report generated!')">Export Payroll Summary</button>
+            <h3 style="margin-bottom: var(--space-2); font-size: 18px;">📊 Workforce Reports & Export Hub</h3>
+            <p style="color: var(--text-muted); margin-bottom: var(--space-6);">Generate exportable attendance audit logs, payroll slip statements, and workforce breakdown summaries.</p>
+            <div style="display: flex; gap: var(--space-4);">
+              <button class="btn btn-secondary" onclick="alert('Attendance log CSV report generated!')">Export Attendance CSV</button>
+              <button class="btn btn-secondary" onclick="alert('Payroll expenditure report generated!')">Export Payroll Summary</button>
             </div>
           </div>
         </section>
@@ -234,23 +234,23 @@
   <!-- VIEW-AS-EMPLOYEE / EDIT PROFILE MODAL -->
   <div id="employee-modal" class="modal-backdrop">
     <div class="modal-dialog">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 id="modal-emp-title">Employee Full Profile</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-5);">
+        <h3 id="modal-emp-title" class="card-title">Employee Full Profile</h3>
         <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeModal('employee-modal')">✕</button>
       </div>
 
       <form id="form-edit-emp-admin" onsubmit="saveEmployeeProfileAdmin(event)">
         <input type="hidden" id="modal-emp-db-id">
 
-        <div style="display: flex; gap: 16px; margin-bottom: 16px;">
-          <img id="modal-emp-pic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" alt="Avatar" class="avatar" style="width:64px; height:64px;">
+        <div style="display: flex; gap: var(--space-4); align-items: center; margin-bottom: var(--space-5);">
+          <img id="modal-emp-pic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" alt="Avatar" class="avatar" style="width:56px; height:56px;">
           <div>
-            <h4 id="modal-emp-name" style="font-size: 18px;">Alex Morgan</h4>
-            <p id="modal-emp-code" style="color: var(--accent); font-size: 13px;">EMP-1001</p>
+            <h4 id="modal-emp-name" style="font-size: 16px; font-weight: 700;">Alex Morgan</h4>
+            <p id="modal-emp-code" style="color: var(--accent-cyan); font-size: 12px; font-family: monospace;">EMP-1001</p>
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px;">
+        <div style="display: flex; gap: var(--space-3);">
           <div class="form-group" style="flex:1;">
             <label class="form-label">First Name</label>
             <input type="text" id="modal-first-name" class="form-control">
@@ -261,7 +261,7 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px;">
+        <div style="display: flex; gap: var(--space-3);">
           <div class="form-group" style="flex:1;">
             <label class="form-label">Department</label>
             <input type="text" id="modal-dept" class="form-control">
@@ -272,7 +272,7 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 12px;">
+        <div style="display: flex; gap: var(--space-3);">
           <div class="form-group" style="flex:1;">
             <label class="form-label">Phone</label>
             <input type="text" id="modal-phone" class="form-control">
@@ -296,8 +296,8 @@
   <!-- MARK ATTENDANCE OVERRIDE MODAL -->
   <div id="mark-att-modal" class="modal-backdrop">
     <div class="modal-dialog">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3>Mark Attendance Override</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-5);">
+        <h3 class="card-title">Mark Attendance Override</h3>
         <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeModal('mark-att-modal')">✕</button>
       </div>
 
