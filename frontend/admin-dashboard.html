@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Dayflow HRMS</title>
+  <meta name="description" content="Dayflow HRMS Admin Dashboard for employee management, leave approvals, attendance logs, and payroll control.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="auth-brand-logo" style="width:36px; height:36px; font-size:18px;">D</div>
+        <div>
+          <h2 style="font-size: 18px; font-weight: 800;">Dayflow</h2>
+          <span class="badge badge-approved" style="font-size: 10px;">HR Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-item active" id="nav-employees" onclick="switchAdminSection('employees')">
+          <span>👥 Employee Directory</span>
+        </div>
+        <div class="nav-item" id="nav-attendance" onclick="switchAdminSection('attendance')">
+          <span>🕒 Attendance Records</span>
+        </div>
+        <div class="nav-item" id="nav-leaves" onclick="switchAdminSection('leaves')">
+          <span>📅 Leave Approvals</span>
+          <span id="pending-count-badge" class="badge badge-pending" style="display:none; margin-left:auto;">0</span>
+        </div>
+        <div class="nav-item" id="nav-payroll" onclick="switchAdminSection('payroll')">
+          <span>💰 Payroll Control</span>
+        </div>
+        <div class="nav-item" id="nav-reports" onclick="switchAdminSection('reports')">
+          <span>📊 Reports & Analytics</span>
+        </div>
+      </nav>
+
+      <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--surface-border);">
+        <button class="btn btn-secondary btn-block" onclick="handleLogout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div>
+          <h3 id="page-title" style="font-size: 20px; font-weight: 700;">Employee Directory</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">Manage workforce profiles, roles, and administrative records.</p>
+        </div>
+
+        <div class="user-profile-badge">
+          <img id="admin-avatar" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" alt="Avatar" class="avatar">
+          <div>
+            <div id="admin-name" style="font-weight: 600; font-size: 14px;">Sarah Jenkins</div>
+            <div id="admin-email" style="font-size: 12px; color: var(--text-muted);">admin@dayflow.com</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Views -->
+      <div class="content-area">
+
+        <!-- Top Metrics Row -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon" style="background: rgba(99, 102, 241, 0.2); color: var(--primary);">👥</div>
+            <div>
+              <div id="metric-total-employees" class="metric-value">0</div>
+              <div class="metric-label">Total Employees</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background: var(--success-bg); color: var(--success);">✅</div>
+            <div>
+              <div id="metric-present-today" class="metric-value">0</div>
+              <div class="metric-label">Present Today</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background: var(--warning-bg); color: var(--warning);">⏳</div>
+            <div>
+              <div id="metric-pending-leaves" class="metric-value">0</div>
+              <div class="metric-label">Pending Leaves</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" style="background: rgba(56, 189, 248, 0.2); color: var(--accent);">💵</div>
+            <div>
+              <div id="metric-total-payroll" class="metric-value">$0</div>
+              <div class="metric-label">Monthly Payroll</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 1: EMPLOYEE DIRECTORY -->
+        <section id="sec-employees">
+          <div class="card" style="margin-bottom: 24px;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+              <input type="text" id="employee-search" class="form-control" style="max-width: 320px;" placeholder="Search by name, ID, or email..." oninput="filterEmployees()">
+              <select id="department-filter" class="form-control" style="max-width: 220px;" onchange="filterEmployees()">
+                <option value="">All Departments</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Human Resources">Human Resources</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Sales">Sales</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>ID</th>
+                  <th>Department</th>
+                  <th>Designation</th>
+                  <th>Joined Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="employee-table-body">
+                <!-- Populated dynamically via dashboard.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 2: ATTENDANCE RECORDS & MANAGE -->
+        <section id="sec-attendance" style="display: none;">
+          <div class="card" style="margin-bottom: 24px;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <input type="date" id="att-filter-date" class="form-control" onchange="loadAdminAttendance()">
+                <select id="att-filter-emp" class="form-control" onchange="loadAdminAttendance()">
+                  <option value="">All Employees</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="openMarkAttendanceModal()">+ Mark Attendance Override</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Employee</th>
+                  <th>Check In</th>
+                  <th>Check Out</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-attendance-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 3: LEAVE APPROVALS QUEUE -->
+        <section id="sec-leaves" style="display: none;">
+          <div class="card" style="margin-bottom: 24px;">
+            <div style="display: flex; gap: 12px;">
+              <button class="btn btn-secondary" onclick="filterLeaveStatus('')">All</button>
+              <button class="btn btn-secondary" onclick="filterLeaveStatus('Pending')">Pending Queue</button>
+              <button class="btn btn-secondary" onclick="filterLeaveStatus('Approved')">Approved</button>
+              <button class="btn btn-secondary" onclick="filterLeaveStatus('Rejected')">Rejected</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Type</th>
+                  <th>Dates</th>
+                  <th>Duration</th>
+                  <th>Remarks</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-leaves-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 4: PAYROLL CONTROL -->
+        <section id="sec-payroll" style="display: none;">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Basic Salary ($)</th>
+                  <th>Allowances ($)</th>
+                  <th>Deductions ($)</th>
+                  <th>Net Pay ($)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-payroll-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SECTION 5: REPORTS & ANALYTICS STUB -->
+        <section id="sec-reports" style="display: none;">
+          <div class="card">
+            <h3 style="margin-bottom: 12px;">📊 Reports & Analytics Hub</h3>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Generate exportable attendance audit logs, payroll slip statements, and workforce breakdown summaries.</p>
+            <div style="display: flex; gap: 16px;">
+              <button class="btn btn-secondary" onclick="alert('Attendance report generated successfully!')">Export Attendance CSV</button>
+              <button class="btn btn-secondary" onclick="alert('Payroll summary report generated!')">Export Payroll Summary</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- VIEW-AS-EMPLOYEE / EDIT PROFILE MODAL -->
+  <div id="employee-modal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 id="modal-emp-title">Employee Full Profile</h3>
+        <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeModal('employee-modal')">✕</button>
+      </div>
+
+      <form id="form-edit-emp-admin" onsubmit="saveEmployeeProfileAdmin(event)">
+        <input type="hidden" id="modal-emp-db-id">
+
+        <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+          <img id="modal-emp-pic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" alt="Avatar" class="avatar" style="width:64px; height:64px;">
+          <div>
+            <h4 id="modal-emp-name" style="font-size: 18px;">Alex Morgan</h4>
+            <p id="modal-emp-code" style="color: var(--accent); font-size: 13px;">EMP-1001</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">First Name</label>
+            <input type="text" id="modal-first-name" class="form-control">
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">Last Name</label>
+            <input type="text" id="modal-last-name" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">Department</label>
+            <input type="text" id="modal-dept" class="form-control">
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">Designation</label>
+            <input type="text" id="modal-desig" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">Phone</label>
+            <input type="text" id="modal-phone" class="form-control">
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">Joining Date</label>
+            <input type="date" id="modal-doj" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input type="text" id="modal-address" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Save Administrative Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MARK ATTENDANCE OVERRIDE MODAL -->
+  <div id="mark-att-modal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>Mark Attendance Override</h3>
+        <button class="btn btn-secondary" style="padding: 4px 10px;" onclick="closeModal('mark-att-modal')">✕</button>
+      </div>
+
+      <form onsubmit="submitMarkAttendance(event)">
+        <div class="form-group">
+          <label class="form-label">Select Employee</label>
+          <select id="override-emp-select" class="form-control" required></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input type="date" id="override-date" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="override-status" class="form-control" required>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+            <option value="Half-day">Half-day</option>
+            <option value="Leave">Leave</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Save Attendance Record</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/attendance.js"></script>
+  <script src="js/leaves.js"></script>
+  <script src="js/payroll.js"></script>
+</body>
+</html>
