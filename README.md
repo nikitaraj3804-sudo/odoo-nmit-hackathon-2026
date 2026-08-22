@@ -5,41 +5,41 @@
 
 ---
 
-## 🌟 Overview
+## Overview
 
 **Dayflow** is a full-stack, enterprise-grade Human Resource Management System designed to streamline core HR operations. From automated onboarding and email verification to real-time attendance tracking, leave approval workflows, and payroll structure visibility, Dayflow brings clarity and alignment to every workday.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-### 🔐 1. Authentication & Role-Based Access Control (RBAC)
+### 1. Authentication & Role-Based Access Control (RBAC)
 - **Registration**: Register with Employee ID, Email, Password, and Role (`Admin / HR Officer` vs `Employee`).
 - **Password Enforcement**: Validates minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (both client-side and server-side).
 - **Email Verification**: Token generation flow with verification endpoint (`/api/auth/verify/<token>`) and interactive UI modal.
 - **Role Enforcement**: Strict server-side RBAC using `@role_required(['admin'])` decorators to ensure employees cannot access management APIs.
 
-### 👥 2. Employee Profile Management
+### 2. Employee Profile Management
 - Comprehensive profile views with personal info, job details, department, date of joining, documents list, and profile avatar.
 - **Granular Permissions**: Employees can edit limited profile fields (phone, address, avatar), while HR Admins can update all details.
 
-### 🕒 3. Attendance Management
+### 3. Attendance Management
 - **One-Click Check-In / Check-Out**: Record real-time timestamps directly from the dashboard.
 - **Status Lifecycle**: `Present`, `Absent`, `Half-day`, and `Leave`.
 - **Views**: Daily and weekly matrix views with date range filtering. Admin can view and override attendance for any employee.
 
-### 📅 4. Leave & Time-Off Workflows
+### 4. Leave & Time-Off Workflows
 - **Apply for Leave**: Select leave type (`Paid`, `Sick`, `Unpaid`), date range (with end date ≥ start date validation), and optional remarks.
 - **Approval Engine**: Admins can review, approve, or reject leave applications with comments.
 - **Automated Sync**: Approving a leave application automatically updates attendance status to `Leave` across the specified date range.
 
-### 💰 5. Payroll Visibility & Governance
+### 5. Payroll Visibility & Governance
 - **Employee View**: Read-only breakdown of Basic Salary, Allowances, Deductions, and Net Pay.
 - **Admin Control**: HR Officers can view and update salary structures for any employee. Server-side validation guarantees non-negative numeric inputs and auto-calculates Net Pay (`Basic + Allowances - Deductions`).
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Backend**: Python 3.11+, Flask (Application Factory), Flask-SQLAlchemy, PyJWT, Flask-CORS, bcrypt / `werkzeug.security`, Gunicorn WSGI.
 - **Database**: MySQL (via PyMySQL / mysqlclient).
@@ -47,7 +47,7 @@
 
 ---
 
-## ⚙️ Setup & Installation Instructions
+## Setup & Installation Instructions
 
 ### Prerequisites
 - Python 3.11 or higher
@@ -92,7 +92,7 @@ Then visit `http://localhost:8000` in your web browser.
 
 ---
 
-## ☁️ Deploying to Railway
+## Deploying to Railway
 
 Follow these steps to deploy Dayflow to [Railway](https://railway.app):
 
@@ -118,7 +118,7 @@ Follow these steps to deploy Dayflow to [Railway](https://railway.app):
 
 ---
 
-## 📡 API Endpoint Overview
+## API Endpoint Overview
 
 | Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
