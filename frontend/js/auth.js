@@ -109,12 +109,17 @@ function validatePasswordClientSide() {
  * Sign In Handler
  */
 async function handleLogin(event) {
-  event.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
+  if (event && event.preventDefault) event.preventDefault();
+  const email = (document.getElementById('login-email')?.value || '').trim();
+  const password = document.getElementById('login-password')?.value || '';
 
   const alertBox = document.getElementById('auth-alert');
   if (alertBox) alertBox.style.display = 'none';
+
+  if (!email || !password) {
+    showToast('Please enter both email and password.', 'error');
+    return;
+  }
 
   try {
     const res = await apiFetch('/auth/login', {
@@ -151,13 +156,13 @@ async function handleLogin(event) {
  * Sign Up Handler
  */
 async function handleSignup(event) {
-  event.preventDefault();
-  const first_name = document.getElementById('signup-firstname').value.trim();
-  const last_name = document.getElementById('signup-lastname').value.trim();
-  const employee_id = document.getElementById('signup-empid').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const role = document.getElementById('signup-role').value;
-  const password = document.getElementById('signup-password').value;
+  if (event && event.preventDefault) event.preventDefault();
+  const first_name = (document.getElementById('signup-firstname')?.value || '').trim();
+  const last_name = (document.getElementById('signup-lastname')?.value || '').trim();
+  const employee_id = (document.getElementById('signup-empid')?.value || '').trim();
+  const email = (document.getElementById('signup-email')?.value || '').trim();
+  const role = document.getElementById('signup-role')?.value || 'employee';
+  const password = document.getElementById('signup-password')?.value || '';
 
   try {
     const res = await apiFetch('/auth/signup', {
@@ -191,8 +196,8 @@ async function handleSignup(event) {
  * Email Verification Handler
  */
 async function handleEmailVerification(event) {
-  event.preventDefault();
-  const token = document.getElementById('verify-token').value.trim();
+  if (event && event.preventDefault) event.preventDefault();
+  const token = (document.getElementById('verify-token')?.value || '').trim();
 
   try {
     const res = await apiFetch(`/auth/verify/${token}`, { method: 'GET' });

@@ -47,22 +47,22 @@
       <!-- Feedback Alert Banner -->
       <div id="auth-alert" class="card" style="display: none; padding: 12px 16px; margin-bottom: 20px; font-size: 13px;"></div>
 
-      <!-- 1. SIGN IN FORM (Novalidate + text type to prevent browser HTML5 pattern intercept) -->
+      <!-- 1. SIGN IN FORM (Using button type=button to completely eliminate HTML5 browser validation popups) -->
       <form id="form-login" onsubmit="handleLogin(event); return false;" novalidate>
         <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">Sign in to your account</h2>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">Enter your work credentials to access the Dayflow portal.</p>
 
         <div class="form-group">
           <label class="form-label" for="login-email">Work Email Address</label>
-          <input type="text" id="login-email" class="form-control" placeholder="name@company.com" required autocomplete="username">
+          <input type="text" id="login-email" class="form-control" placeholder="name@company.com" autocomplete="username">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="login-password">Password</label>
-          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" autocomplete="current-password">
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">
+        <button type="button" class="btn btn-primary btn-block" style="margin-top: 8px;" onclick="handleLogin(event)">
           <span>Sign In to Dayflow</span>
         </button>
 
@@ -74,29 +74,29 @@
       </form>
 
       <!-- 2. SIGN UP FORM -->
-      <form id="form-signup" onsubmit="handleSignup(event); return false;" style="display: none;">
+      <form id="form-signup" onsubmit="handleSignup(event); return false;" novalidate style="display: none;">
         <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">Create employee account</h2>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Join your company workspace on Dayflow HRMS.</p>
 
         <div style="display: flex; gap: 12px;">
           <div class="form-group" style="flex: 1;">
             <label class="form-label" for="signup-firstname">First Name</label>
-            <input type="text" id="signup-firstname" class="form-control" placeholder="John" required>
+            <input type="text" id="signup-firstname" class="form-control" placeholder="John">
           </div>
           <div class="form-group" style="flex: 1;">
             <label class="form-label" for="signup-lastname">Last Name</label>
-            <input type="text" id="signup-lastname" class="form-control" placeholder="Doe" required>
+            <input type="text" id="signup-lastname" class="form-control" placeholder="Doe">
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="signup-empid">Employee ID</label>
-          <input type="text" id="signup-empid" class="form-control" placeholder="EMP-2026" required>
+          <input type="text" id="signup-empid" class="form-control" placeholder="EMP-2026">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="signup-email">Work Email</label>
-          <input type="email" id="signup-email" class="form-control" placeholder="john.doe@company.com" required>
+          <input type="text" id="signup-email" class="form-control" placeholder="john.doe@company.com">
         </div>
 
         <div class="form-group">
@@ -109,26 +109,26 @@
 
         <div class="form-group">
           <label class="form-label" for="signup-password">Security Password</label>
-          <input type="password" id="signup-password" class="form-control" placeholder="Min 8 chars, 1 upper, 1 lower, 1 digit, 1 special" required oninput="validatePasswordClientSide()">
+          <input type="password" id="signup-password" class="form-control" placeholder="Min 8 chars, 1 upper, 1 lower, 1 digit, 1 special" oninput="validatePasswordClientSide()">
           <div id="pwd-rules" style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
             Password rules: 8+ chars, upper & lower case, number & special char.
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Register Account</button>
+        <button type="button" class="btn btn-primary btn-block" onclick="handleSignup(event)">Register Account</button>
       </form>
 
       <!-- 3. EMAIL VERIFICATION FORM -->
-      <form id="form-verify" onsubmit="handleEmailVerification(event); return false;" style="display: none;">
+      <form id="form-verify" onsubmit="handleEmailVerification(event); return false;" novalidate style="display: none;">
         <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">Verify your account</h2>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Enter your email verification token below.</p>
 
         <div class="form-group">
           <label class="form-label" for="verify-token">Verification Token</label>
-          <input type="text" id="verify-token" class="form-control" placeholder="Paste verification UUID token" required>
+          <input type="text" id="verify-token" class="form-control" placeholder="Paste verification UUID token">
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Verify Email Account</button>
+        <button type="button" class="btn btn-primary btn-block" onclick="handleEmailVerification(event)">Verify Email Account</button>
       </form>
     </div>
   </div>
